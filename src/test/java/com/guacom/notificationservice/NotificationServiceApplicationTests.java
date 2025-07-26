@@ -1,4 +1,4 @@
-package br.com.guacom.notificationservice;
+package com.guacom.notificationservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
