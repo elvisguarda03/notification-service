@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static com.guacom.notificationservice.domain.enums.NotificationStatus.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -57,11 +58,11 @@ class NotificationControllerIT {
                 .andExpect(jsonPath("$.message").value("Retrieved 3 notification records"))
                 .andExpect(jsonPath("$.data").isArray())
                 .andExpect(jsonPath("$.data.length()").value(3))
-                .andExpect(jsonPath("$.data[0].recipient").value("user1@example.com"))
+                .andExpect(jsonPath("$.data[0].userEmail").value("user1@example.com"))
                 .andExpect(jsonPath("$.data[0].channel").value("EMAIL"))
-                .andExpect(jsonPath("$.data[0].successful").value(true))
-                .andExpect(jsonPath("$.data[1].recipient").value("user2@example.com"))
-                .andExpect(jsonPath("$.data[2].successful").value(false));
+                .andExpect(jsonPath("$.data[0].status").value(DELIVERED.name()))
+                .andExpect(jsonPath("$.data[1].userEmail").value("user2@example.com"))
+                .andExpect(jsonPath("$.data[2].status").value(FAILED.name()));
     }
 
     @Test
@@ -93,7 +94,7 @@ class NotificationControllerIT {
                 .channel(channel)
                 .messageCategory(MessageCategory.SPORTS)
                 .messageContent("Test notification content")
-                .status(successful ? NotificationStatus.DELIVERED : NotificationStatus.FAILED)
+                .status(successful ? DELIVERED : NotificationStatus.FAILED)
                 .errorMessage(successful ? null : "Failed to deliver")
                 .sentAt(LocalDateTime.now())
                 .build();
